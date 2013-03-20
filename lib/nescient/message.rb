@@ -1,10 +1,11 @@
-# -*- coding: utf-8 -*-
 module Nescient
   class Message
+
     PARSE = /\A(?::(?<prefix>\S+)\s)?
                    (?<command>\S+)
                    (?:\s(?<params>[^:]+))?\s+
                    (?::(?<trailing>.+))?/x
+
     attr_reader :prefix, :command, :params, :trailing
 
     def initialize(line)

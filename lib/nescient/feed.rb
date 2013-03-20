@@ -1,5 +1,6 @@
 module Nescient
   class Feed
+
     attr_reader :history
 
     def initialize(address, port)
@@ -17,5 +18,6 @@ module Nescient
     def stop
       @stream.close
     end
+
   end
 end
