@@ -1,11 +1,6 @@
 module Nescient
   class Message
 
-    PARSE = /\A(?::(?<prefix>\S+)\s)?
-                   (?<command>\S+)
-                   (?:\s(?<params>[^:]+))?\s+
-                   (?::(?<trailing>.+))?/x
-
     attr_reader :prefix, :command, :params, :trailing
 
     def initialize(line)
@@ -14,11 +9,33 @@ module Nescient
     end
 
     def parse
-      if (pieces = PARSE.match(@string))
-        @prefix   = pieces[:prefix]
-        @command  = pieces[:command]
-        @params   = pieces[:params]
-        @trailing = pieces[:trailing]
+      parse_prefix(@string)
+      parse_command(@string)
+      parse_params(@string)
+      parse_trailing(@string)
+    end
+
+    def parse_prefix(string)
+      if string.sub!(/\A:(\S+)\s+/,"")
+        @prefix = $1
+      end
+    end
+
+    def parse_command(string)
+      if string.sub!(/\A(?:\S+\s)?([^:\s]\S+)/,"")
+        @command = $1
+      end
+    end
+
+    def parse_params(string)
+      if string.sub!(//,"")
+        @params = $1
+      end
+    end
+
+    def parse_trailing(string)
+      if string.sub!(/\A:?(?:[^:]+)+:(.+)/,,"")
+        @trailing = $1
       end
     end
     
