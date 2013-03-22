@@ -28,8 +28,9 @@ module Nescient
     end
 
     def parse_params(string)
-      if string.sub!(//,"")
-        @params = $1
+      @params = [ ]
+      while string.sub!(//,"")
+        @params << $1
       end
     end
 
