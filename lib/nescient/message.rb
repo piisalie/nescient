@@ -1,44 +1,33 @@
+require 'strscan'
+
 module Nescient
   class Message
-
-    attr_reader :prefix, :command, :params, :trailing
+    attr_reader :prefix, :command, :params
 
     def initialize(line)
-      @string   = line.to_s
-      parse
+      @scanner = StringScanner.new(line.to_s)
+      parse(@scanner)
     end
 
-    def parse
-      parse_prefix(@string)
-      parse_command(@string)
-      parse_params(@string)
-      parse_trailing(@string)
+    def parse(scanner)
+      parse_prefix(scanner)
+      parse_command(scanner)
+      parse_params(scanner)
     end
 
-    def parse_prefix(string)
-      if string.sub!(/\A:(\S+)\s+/,"")
-        @prefix = $1
-      end
+    def parse_prefix(scanner)
+      @prefix = scanner.scan(/\A:(\S+)\s+/)
     end
 
-    def parse_command(string)
-      if string.sub!(/\A(?:\S+\s)?([^:\s]\S+)/,"")
-        @command = $1
-      end
+    def parse_command(scanner)
+      @command = scanner.scan(/\A([0-9a-zA-Z]+)\s+/,)
     end
 
-    def parse_params(string)
+    def parse_params(scanner)
       @params = [ ]
-      while string.sub!(//,"")
-        @params << $1
+      while param = scanner.scan(/\A([^:])\s+|(:.+)\r?\n?/)
+        @params << param
       end
     end
-
-    def parse_trailing(string)
-      if string.sub!(/\A:?(?:[^:]+)+:(.+)/,,"")
-        @trailing = $1
-      end
-    end
-    
   end
 end

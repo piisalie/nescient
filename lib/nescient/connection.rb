@@ -2,12 +2,20 @@ require 'socket'
 
 module Nescient
   class Connection
-
-    attr_reader :socket
-
     def initialize(address, port)
-      @address, @port = address, port
-      @socket = TCPSocket.new(@address, @port)
+      @socket = TCPSocket.new(address, port)
+    end
+
+    def each(&block)
+      @socket.each(&block)
+    end
+
+    def puts(*args)
+      @socket.puts(*args)
+    end
+
+    def close
+      @socket.close
     end
   end
 end
