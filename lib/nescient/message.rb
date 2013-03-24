@@ -16,17 +16,20 @@ module Nescient
     end
 
     def parse_prefix(scanner)
-      @prefix = scanner.scan(/\A:(\S+)\s+/)
+      scanner.scan(/\A:(\S+)\s+/)
+      @prefix = scanner[1]
     end
 
     def parse_command(scanner)
-      @command = scanner.scan(/\A([0-9a-zA-Z]+)\s+/,)
+      scanner.scan(/\A([0-9a-zA-Z]+)\s+/)
+      @command = scanner[1]
     end
 
     def parse_params(scanner)
       @params = [ ]
-      while param = scanner.scan(/\A([^:]\S*)\s+|(:.+)\r?\n?/)
-        @params << param
+      while scanner.scan(/\A([^:\s]\S*)\s+|:(.+)\r?\n?/)
+        @params << scanner[1] if scanner[1]
+        @params << scanner[2] if scanner[2]
       end
     end
   end
