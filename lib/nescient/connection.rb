@@ -10,8 +10,8 @@ module Nescient
       @socket.each(&block)
     end
 
-    def puts(*args)
-      @socket.puts(*args)
+    def puts(line)
+      @socket.puts(line)
     end
 
     def close
