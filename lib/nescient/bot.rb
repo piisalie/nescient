@@ -1,7 +1,7 @@
 module Nescient
   class Bot
-    def initialize(address, port)
-      @irc        = Connection.new(address, port)
+    def initialize(connection)
+      @irc        = connection
       @listen_for = nil
     end
 
@@ -16,7 +16,7 @@ module Nescient
         next
       end
     end
-    
+
     def check(message)
       if @listen_for.handle?(message) == :exclusive
         puts "exclusive"

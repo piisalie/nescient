@@ -2,7 +2,7 @@ require 'socket'
 
 module Nescient
   class Connection
-    def initialize(address, port)
+    def initialize(address, port = 6667)
       @socket = TCPSocket.new(address, port)
     end
 
