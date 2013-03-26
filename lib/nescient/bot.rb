@@ -7,7 +7,7 @@ module Nescient
 
     attr_writer :listen_for
 
-    def run
+    def listen
       fail "Bot needs to know what to listen for" unless @listen_for
       @irc.each do |line|
         message = Message.new(line)
@@ -21,6 +21,7 @@ module Nescient
       if @listen_for.handle?(message) == :exclusive
         puts "exclusive"
         @listen_for.process(message, @irc)
+        @irc.each { |line| puts line }
         return :break
       elsif @listen_for.handle?(message)
         puts "passthrough"

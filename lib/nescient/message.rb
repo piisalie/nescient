@@ -2,7 +2,7 @@ require 'strscan'
 
 module Nescient
   class Message
-    attr_reader :prefix, :command, :params
+    attr_reader :prefix, :command, :params, :trailing
 
     def initialize(line)
       @scanner = StringScanner.new(line.to_s)
@@ -13,6 +13,7 @@ module Nescient
       parse_prefix(scanner)
       parse_command(scanner)
       parse_params(scanner)
+      @trailing = @params.last
     end
 
     def parse_prefix(scanner)
@@ -31,10 +32,6 @@ module Nescient
         param = scanner[1] || scanner[2]
         @params << param
       end
-    end
-
-    def trailing
-      @params.last
     end
   end
 end
