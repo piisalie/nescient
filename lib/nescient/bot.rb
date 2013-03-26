@@ -11,6 +11,7 @@ module Nescient
       fail "Bot needs to know what to listen for" unless @listen_for
       @irc.each do |line|
         message = Message.new(line)
+        puts message.trailing
         break if check(message) == :break
         next
       end

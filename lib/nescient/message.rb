@@ -32,5 +32,9 @@ module Nescient
         @params << param
       end
     end
+
+    def trailing
+      @params.last
+    end
   end
 end
