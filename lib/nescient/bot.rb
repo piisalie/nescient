@@ -1,35 +1,26 @@
 module Nescient
   class Bot
     def initialize(connection)
-      @irc        = connection
-      @listen_for = nil
+      @irc     = connection
+      @actions = [ ]
     end
 
-    attr_writer :listen_for
+    def listen_for(action)
+      @actions << action
+    end
 
     def listen
-      fail "Bot needs to know what to listen for" unless @listen_for
+      fail "Bot needs to know what to listen for" if @actions.empty?
+
       @irc.each do |line|
         message = Message.new(line)
-        puts message.trailing
-        break if check(message) == :break
-        next
+        @actions.each do |action|
+          if (wants_it = action.handle?(message))
+            action.process(message, @irc)
+            break if wants_it == :exclusive
+          end
+        end
       end
     end
-
-    def check(message)
-      if @listen_for.handle?(message) == :exclusive
-        puts "exclusive"
-        @listen_for.process(message, @irc)
-        @irc.each { |line| puts line }
-        return :break
-      elsif @listen_for.handle?(message)
-        puts "passthrough"
-        @listen_for.process(message, @irc)
-      else
-        puts "skipped"
-      end
-    end
-
   end
 end
