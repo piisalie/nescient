@@ -7,7 +7,7 @@ module Nescient
   def self.run
     connection     = Connection.new("irc.freenode.net")
     bot            = Bot.new(connection)
-    bot.listen_for = LoginAction.new
+    bot.listen_for(LoginAction.new)
     bot.listen
   end
 end

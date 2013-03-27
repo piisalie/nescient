@@ -1,48 +1,49 @@
 module Nescient
   class LoginAction
-    ACTIONS = [ :user, :nick, :join ]
+    STEPS = [:login, :awaiting_welcome, :join, :awaiting_join, :done]
+
     def initialize
-      @state = ACTIONS.first
+      @step = STEPS.first
     end
 
     def handle?(message)
-      return :passthrough if 
-        message.trailing.downcase.include?("checking ident")
-      return :exclusive if
-        message.trailing.downcase.include?("found your hostname")
+      if @step == :login
+        :exclusive
+      elsif @step == :awaiting_welcome and message.command == "001"
+        advance
+        :exclusive
+      elsif @step                == :awaiting_join and
+            message.command      == "JOIN"         and
+            message.params.first == "#bottest"
+        advance
+        false
+      else
+        false
+      end
     end
 
     def process(message, connection)
-      puts "procesed"
-      case @state
-      when :done
-        puts "we're done here"
-      when :user
-        send_user(connection)
-      when :nick
-        send_nick(connection)
+      case @step
+      when :login
+        send_login(connection)
       when :join
-        puts "do join stuff"
-        advance
-      else
-        puts "there's something wrong"
+        send_join(connection)
       end
     end
-    
+
     def advance
-      i      = ACTIONS.index(@state)
-      @state = ACTIONS[i+1] || :done
+      i     = STEPS.index(@step)
+      @step = STEPS[i + 1]
     end
 
-    def send_user(connection)
+    def send_login(connection)
       connection.puts "USER NescientBot 0 * :Nessy Tut"
-      puts "user message sent"
+      connection.puts "NICK :Nescient"
       advance
     end
 
-    def send_nick(connection)
-      connection.puts "NICK Nescient"
-      puts "nick message sent"
+    def send_join(connection)
+      connection.puts "JOIN :#bottest"
       advance
     end
   end
