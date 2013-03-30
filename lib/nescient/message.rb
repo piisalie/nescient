@@ -31,7 +31,7 @@ module Nescient
     end
 
     def parse_params(scanner)
-      while (param = scanner.scan(/([^:\s]\S*)\s+|:([^\r\n]+)\r?\n?\z/))
+      while scanner.scan(/([^:\s]\S*)\s+|:([^\r\n]+)\r?\n?\z/)
         @params << (scanner[1] || scanner[2])
       end
     end
