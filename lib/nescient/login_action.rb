@@ -12,6 +12,8 @@ module Nescient
       elsif @step == :awaiting_welcome and message.command == "001"
         advance
         :exclusive
+      elsif @step == :awaiting_welcome and message.command == "433"
+        :exclusive
       elsif @step                == :awaiting_join and
             message.command      == "JOIN"         and
             message.params.first == "#bottest"
@@ -26,8 +28,10 @@ module Nescient
       case @step
       when :login
         send_login(connection)
-      when :join
+      when :join 
         send_join(connection)
+      when :awaiting_welcome
+        send_alternative_nick(connection) if message.command == "433"
       end
     end
 
@@ -40,6 +44,10 @@ module Nescient
       connection.puts "USER NescientBot 0 * :Nessy Tut"
       connection.puts "NICK :Nescient"
       advance
+    end
+
+    def send_alternative_nick(connection)
+      connection.puts "NICK :Nescient_"
     end
 
     def send_join(connection)

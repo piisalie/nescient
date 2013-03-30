@@ -13,6 +13,7 @@ module Nescient
       fail "Bot needs to know what to listen for" if @actions.empty?
 
       @irc.each do |line|
+        puts line
         message = Message.new(line)
         @actions.each do |action|
           if (wants_it = action.handle?(message))
