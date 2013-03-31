@@ -1,37 +1,42 @@
 module Nescient
-  class LoginAction
-    STEPS = [:login, :awaiting_welcome, :join, :awaiting_join, :done]
+  class LoginAction < Action
+    STEPS = [:login, :awaiting_welcome, :awaiting_join, :done]
 
-    def initialize
-      @step = STEPS.first
+    def initialize(bot_name)
+      super()
+      @bot_name = bot_name
+      @step     = STEPS.first
     end
 
     def handle?(message)
       if @step == :login
         :exclusive
       elsif @step == :awaiting_welcome and message.command == "001"
-        advance
         :exclusive
       elsif @step == :awaiting_welcome and message.command == "433"
         :exclusive
       elsif @step                == :awaiting_join and
             message.command      == "JOIN"         and
             message.params.first == "#bottest"
-        advance
-        false
+        :exclusive
       else
         false
       end
     end
 
-    def process(message, connection)
+    def process(message)
       case @step
       when :login
-        send_login(connection)
-      when :join 
-        send_join(connection)
+        send_login(@connection)
       when :awaiting_welcome
-        send_alternative_nick(connection) if message.command == "433"
+        case message.command
+        when "001"
+          send_join(@connection)
+        when "433"
+          send_alternative_nick(@connection)
+        end
+      when :awaiting_join
+        advance
       end
     end
 
@@ -41,13 +46,13 @@ module Nescient
     end
 
     def send_login(connection)
-      connection.puts "USER NescientBot 0 * :Nessy Tut"
-      connection.puts "NICK :Nescient"
+      connection.puts "USER #{@bot_name}Bot 0 * :Nessy Tut"
+      connection.puts "NICK :#{@bot_name}"
       advance
     end
 
     def send_alternative_nick(connection)
-      connection.puts "NICK :Nescient_"
+      connection.puts "NICK :#{@bot_name}_"
     end
 
     def send_join(connection)
