@@ -2,10 +2,11 @@ module Nescient
   class LoginAction < Action
     STEPS = [:login, :awaiting_welcome, :awaiting_join, :done]
 
-    def initialize(bot_name)
+    def initialize(bot_name, room)
       super()
       @bot_name = bot_name
       @step     = STEPS.first
+      @room     = room
     end
 
     def handle?(message)
@@ -56,7 +57,7 @@ module Nescient
     end
 
     def send_join(connection)
-      connection.puts "JOIN :#bottest"
+      connection.puts "JOIN :#{@room}"
       advance
     end
   end
