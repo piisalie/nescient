@@ -1,12 +1,11 @@
 require_relative "nescient/connection"
 require_relative "nescient/bot"
 require_relative "nescient/message"
-require_relative "nescient/action"
-require_relative "nescient/login_action"
-require_relative "nescient/ping_action"
-require_relative "nescient/github_lookup_action"
-require_relative "nescient/butts_action"
 
+require_relative "nescient/actions/action"
+require_relative "nescient/actions/login_action"
+require_relative "nescient/actions/ping_action"
+require_relative "nescient/actions/github_lookup_action"
 
 module Nescient
   def self.run(argv)
