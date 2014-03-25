@@ -19,7 +19,6 @@ module Nescient
     bot.listen_for(LoginAction.new(options[:bot_name], options[:room]))
     bot.listen_for(PingAction.new)
     bot.listen_for(GithubLookupAction.new)
-    bot.listen_for(CloudToButts.new)
     bot.listen
   end
 
