@@ -6,7 +6,8 @@ Please fork / open issues / contribute / demand features / use / expand / and en
 
 # Usage
 
-`$bin/nescient` connect with defaults
+`$bin/nescient` connects to freenode#bottest with the defaults
+
 `$bin/nescient -h` displays the available options( ssl, channel, server, port, etc )
 
 # Todo:
