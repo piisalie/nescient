@@ -1,11 +1,17 @@
 nescient
 ========
 
-An obtuse Ruby IRC bot.
-Please fork / contribute / use / expand / and enjoy life to the fullest.
+A rather obtuse IRC bot written in Ruby.
+Please fork / open issues / contribute / demand features / use / expand / and enjoy life to the fullest.
 
-Todo:
+# Usage
+
+`$bin/nescient` connect with defaults
+`$bin/nescient -h` displays the available options( ssl, channel, server, port, etc )
+
+# Todo:
 * write a better read me
+* manage dependencies
 * tests
 * restructure
 * MOAR ACTIONS!
