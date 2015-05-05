@@ -7,6 +7,8 @@ require_relative "nescient/actions/login_action"
 require_relative "nescient/actions/ping_action"
 require_relative "nescient/actions/github_lookup_action"
 require_relative "nescient/actions/hubot_action"
+require_relative "nescient/actions/square_action"
+require_relative "nescient/actions/circle_action"
 
 module Nescient
   def self.run(argv)
@@ -21,6 +23,8 @@ module Nescient
     bot.listen_for(PingAction.new)
     bot.listen_for(GithubLookupAction.new)
     bot.listen_for(HubotAction.new)
+    bot.listen_for(CircleAction.new)
+    bot.listen_for(SquareAction.new)
     bot.listen
   end
 
