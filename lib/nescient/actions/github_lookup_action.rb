@@ -23,6 +23,8 @@ module Nescient
       else
         send_reply(message, "You must provide a nick to lookup.")
       end
+      rescue OpenURI::HTTPError
+        send_reply(message, "Could not find #{nick}")
     end
   end
 end

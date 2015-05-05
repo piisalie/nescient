@@ -17,6 +17,9 @@ Please fork / open issues / contribute / demand features / use / expand / and en
 * restructure
 * MOAR ACTIONS!
 
+
+for later reference:
+```
 Bold            = 0x02,     /**< Bold */
 Color           = 0x03,     /**< Color */
 Italic          = 0x09,     /**< Italic */
@@ -44,3 +47,4 @@ foreground (fg)     background (bg)
 13         light magenta       magenta      + blinking fg
 14         gray                black        + blinking fg
 15         light gray          light gray
+```
